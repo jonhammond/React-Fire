@@ -28,10 +28,9 @@ module.exports = React.createClass({
       text: this.state.text,
       done: false
     });
-
     this.setState({
       text: ''
-    })
+    });
   },
   handleInputChange: function(event) {
     this.setState({
