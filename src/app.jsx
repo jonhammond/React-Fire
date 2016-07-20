@@ -19,13 +19,13 @@ var App = React.createClass({
   },
   // ComponentWillMount function only runs once
   componentWillMount: function () {
-    fb = new Firebase(rootUrl + 'items/');
+    this.fb = new Firebase(rootUrl + 'items/');
     // Bind data onto component from root url to a new
     // object (this.state.items)
-    this.bindAsObject(fb, 'items');
+    this.bindAsObject(this.fb, 'items');
     // When fb emits the 'value' event,
     // this.handleDataLoaded returns value
-    fb.on('value', this.handleDataLoaded)
+    this.fb.on('value', this.handleDataLoaded)
   },
   render: function() {
     return <div className="row panel panel-default">
@@ -37,6 +37,7 @@ var App = React.createClass({
         <hr />
         <div className={"content " + (this.state.loaded ? "loaded" : "")} >
           <List items={this.state.items} />
+          {this.clearAllButton()}
         </div>
       </div>
     </div>
@@ -44,6 +45,28 @@ var App = React.createClass({
   handleDataLoaded: function() {
     this.setState({
       loaded: true });
+  },
+  clearAllButton: function() {
+    if(!this.state.loaded) {
+      return null;
+    } else {
+      return <div className="text-center clear-complete">
+        <hr/>
+        <button
+          type="button"
+          className="btn btn-default" onClick={this.handleClearAllClick}
+          >
+          Clear All Completed Tasks
+        </button>
+      </div>
+    };
+  },
+  handleClearAllClick: function() {
+    for (var key in this.state.items) {
+      if(this.state.items[key].done === true) {
+        this.fb.child(key).remove();
+      };
+    };
   }
 });
 
