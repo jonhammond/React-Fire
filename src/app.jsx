@@ -45,7 +45,7 @@ var App = React.createClass({
   handleDataLoaded: function() {
     this.setState({
       loaded: true });
-  },
+  },ulp
   clearAllButton: function() {
     if(!this.state.loaded) {
       return null;
